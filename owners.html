@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"><title>8MR | Official Ownership Registry</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #080808; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; }
+        .accent { color: #a855f7; }
+        .owner-row:hover { background: rgba(168, 85, 247, 0.05); }
+    </style>
+</head>
+<body class="p-8">
+    <nav class="max-w-4xl mx-auto flex justify-between items-center mb-16">
+        <a href="/" class="text-2xl font-black italic tracking-tighter uppercase">8MR</a>
+        <div class="text-[10px] tracking-[0.3em] uppercase text-gray-500 font-bold">Registry Verified: Dec 2025</div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-5xl font-black italic mb-2 uppercase italic glow">The 41 Legacy</h1>
+        <p class="text-gray-500 mb-12 font-bold uppercase tracking-widest text-xs">Current Circulating Owners & Serial Data</p>
+
+        <div class="glass overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-white/5 text-[10px] uppercase tracking-widest text-gray-400 font-black">
+                        <th class="p-6">Asset ID</th>
+                        <th class="p-6">Current Owner</th>
+                        <th class="p-6">Last Online</th>
+                        <th class="p-6">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="text-sm font-bold">
+                    <tr class="owner-row border-t border-white/5">
+                        <td class="p-6 font-mono text-gray-500">5678654287</td>
+                        <td class="p-6">Repotted</td>
+                        <td class="p-6 text-gray-400">25 Dec 2025</td>
+                        <td class="p-6 accent">EXISTING</td>
+                    </tr>
+                    <tr class="owner-row border-t border-white/5">
+                        <td class="p-6 font-mono text-gray-500">5678759315</td>
+                        <td class="p-6">GodzGalaxy</td>
+                        <td class="p-6 text-gray-400">22 Dec 2025</td>
+                        <td class="p-6 accent">EXISTING</td>
+                    </tr>
+                     <tr class="owner-row border-t border-white/5">
+                        <td class="p-6 font-mono text-gray-500">5678787873</td>
+                        <td class="p-6">uglybad</td>
+                        <td class="p-6 text-gray-400">01 Sep 2025</td>
+                        <td class="p-6 accent">EXISTING</td>
+                    </tr>
+                    </tbody>
+            </table>
+        </div>
+        
+        <p class="mt-8 text-center text-[10px] text-gray-600 uppercase tracking-widest">
+            Data sourced via Rolimon's API & Manual Verification
+        </p>
+    </div>
+</body>
+</html>
