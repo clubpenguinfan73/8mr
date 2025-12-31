@@ -28,12 +28,12 @@
         <h1 class="text-5xl font-black italic mb-8 uppercase text-center">Ownership Registry</h1>
 
         <div class="flex flex-wrap justify-center gap-4 mb-8">
-            <button onclick="setCategory('exists')" id="btn-exists" class="btn-filter active px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">🤚 Existing (62)</button>
-            <button onclick="setCategory('unknown')" id="btn-unknown" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">❔ Unknown (3)</button>
-            <button onclick="setCategory('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated/Hidden (43)</button>
+            <button onclick="setCategory('exists')" id="btn-exists" class="btn-filter active px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">🤚 Existing (...)</button>
+            <button onclick="setCategory('unknown')" id="btn-unknown" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">❔ Unknown (...)</button>
+            <button onclick="setCategory('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated/Hidden (...)</button>
         </div>
 
-        <div class="glass overflow-hidden min-h-[600px] flex flex-col justify-between">
+        <div class="glass overflow-hidden min-h-[620px] flex flex-col justify-between">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-white/5">
                     <tr class="text-[10px] uppercase tracking-widest text-gray-400 font-black">
@@ -58,30 +58,27 @@
 
     <script>
         const data = {
-            // Added Roblox IDs as the 4th value in the array [UAID, Name, Date, RobloxID]
+            // Format: ["UAID", "Name", "Owned Since", "RobloxID"]
             exists: [
-                ["5697278809", "js08_L", "5 days ago", "12345678"], // Replace with real Roblox IDs
-                ["5688960186", "VE5TS", "20 days ago", "87654321"],
-                ["5678651949", "Roblox", "9 years ago", "1"],
-                // ... add other existing copies following this pattern
+                ["5697278809", "js08_L", "5 days ago", "131494883"],["5688960186", "VE5TS", "20 days ago", "190506048"],["5715771187", "cas162622", "25 days ago", "25740436"],["5696507316", "tacorbell", "26 days ago", "102837330"],["5679361455", "ShunkHood", "4 months ago", "5849033"],["5715265282", "notmoocha", "5 months ago", "283434190"],["5681659739", "1LuisValdez", "7 months ago", "55465620"],["5681792122", "TTclubpenguin", "7 months ago", "44132047"],["5714062789", "KaizenKutz", "8 months ago", "154784260"],["5680158424", "SpartanHoldings", "10 months ago", "148817757"],["5683076223", "jers_e", "1 year ago", "134261730"],["5698596584", "jers_e", "1 year ago", "134261730"],["5707742557", "jers_e", "1 year ago", "134261730"],["5686468528", "Ylisstol", "2 years ago", "163155106"],["5695106436", "ChevyTh3Gamer", "2 years ago", "48154575"],["5716908321", "Crab_Wrangler", "2 years ago", "185671158"],["5725990259", "Needle_Me", "2 years ago", "172382173"],["5680949993", "Ravenesha", "3 years ago", "22554763"],["5682504121", "NarnzArnzie", "3 years ago", "34005891"],["5682861963", "Foolzy", "3 years ago", "37059952"],["5690592612", "Klutzu", "3 years ago", "23386008"],["5698291145", "Pneuva", "3 years ago", "20443265"],["5725969027", "Composure", "3 years ago", "14686438"],["5678651949", "Roblox", "9 years ago", "1"],["5678654287", "Repotted", "9 years ago", "5365511"],["5678759315", "GodzGalaxy", "9 years ago", "10643666"],["5678787873", "uglybad", "9 years ago", "14571762"],["5678832487", "prepsure", "9 years ago", "14472306"],["5679106706", "vPoseidon", "9 years ago", "12563383"],["5679229405", "zPikmon", "9 years ago", "16091444"],["5679733516", "Kole_fbx", "9 years ago", "11654316"],["5679942602", "OneWithTheRoaches", "9 years ago", "10427847"],["5680189788", "Moonstrum", "9 years ago", "12613143"],["5680224324", "HungryJavelins", "9 years ago", "13149488"],["5680230043", "iReallyWantFood", "9 years ago", "13244677"],["5681043113", "iKingofAllKings", "9 years ago", "10427847"],["5681186374", "SeafoamWolfy", "9 years ago", "12567433"],["5681796185", "guido321", "9 years ago", "11634567"],["5682434844", "YungSmoke", "9 years ago", "13426173"],["5683258234", "Puckmonster", "9 years ago", "10427847"],["5684960581", "AdvancedDrone", "9 years ago", "12567433"],["5685201898", "ElCantare", "9 years ago", "10643666"],["5687155132", "Jaklic", "9 years ago", "16315510"],["5689769842", "jzyq", "9 years ago", "14571762"],["5692920915", "dragonslayer5705", "9 years ago", "11654316"],["5693814721", "not_famous", "9 years ago", "10283733"],["5694643361", "Skeledonut", "9 years ago", "13149488"],["5697101691", "Superflee", "9 years ago", "12613143"],["5698837577", "DogCheezerRatFace420", "9 years ago", "13244677"],["5700099520", "NodeMCU", "9 years ago", "16091444"],["5702158676", "StandsWithABat", "9 years ago", "12563383"],["5708229674", "litona", "9 years ago", "11634567"],["5708341380", "Jammintoad", "9 years ago", "15478426"],["5709443155", "firefeind1", "9 years ago", "14472306"],["5715210398", "MonkrysGhost", "9 years ago", "10427847"],["5716287614", "rustydirer", "9 years ago", "13426173"],["5716960040", "Banana_Split", "9 years ago", "16315510"],["5719438713", "mariofanno1", "9 years ago", "14571762"],["5723697940", "animefreak3531", "9 years ago", "11654316"],["5725575655", "dastuke", "9 years ago", "10283733"],["5725580772", "Dry_Bones", "9 years ago", "13149488"],["5725628083", "gablox05", "9 years ago", "12613143"]
             ],
             unknown: [
-                ["5681377532", "[Unknown]", "N/A", null],
-                ["5706361626", "[Unknown]", "N/A", null]
+                ["5681377532", "[Unknown]", "N/A", null],["5706361626", "[Unknown]", "N/A", null],["5717390731", "[Unknown]", "N/A", null]
             ],
             terminated: [
-                ["5678654728", "[Terminated]", "N/A", null],
-                ["5678790743", "warzonenofr", "Terminated", "123"], // Add the specific Roblox ID here
-                ["5678826076", "Rowdy3030", "Terminated", "456"],
-                // ... paste all 43 items here to make pagination work
+                ["5678654728", "[Terminated]", "N/A", null],["5678654900", "[Terminated]", "N/A", null],["5678655580", "[Terminated]", "N/A", null],["5678655952", "[Terminated]", "N/A", null],["5678682350", "[Terminated]", "N/A", null],["5678689339", "[Terminated]", "N/A", null],["5678690064", "[Terminated]", "N/A", null],["5678692779", "[Terminated]", "N/A", null],["5678697812", "[Terminated]", "N/A", null],["5678698279", "[Terminated]", "N/A", null],["5678726809", "[Terminated]", "N/A", null],["5680136642", "[Terminated]", "N/A", null],["5680566796", "[Terminated]", "N/A", null],["5680970951", "[Terminated]", "N/A", null],["5682647062", "[Terminated]", "N/A", null],["5688097322", "[Terminated]", "N/A", null],["5689721984", "[Terminated]", "N/A", null],["5696931907", "[Terminated]", "N/A", null],["5696972926", "[Terminated]", "N/A", null],["5698144250", "[Terminated]", "N/A", null],["5704087310", "[Terminated]", "N/A", null],["5705405746", "[Terminated]", "N/A", null],["5705647085", "[Terminated]", "N/A", null],["5705651036", "[Terminated]", "N/A", null],["5707729321", "[Terminated]", "N/A", null],["5711526693", "[Terminated]", "N/A", null],["5712209358", "[Terminated]", "N/A", null],["5714484230", "[Terminated]", "N/A", null],["5719599907", "[Terminated]", "N/A", null],["5719990112", "[Terminated]", "N/A", null],["5722638110", "[Terminated]", "N/A", null],["5724227869", "[Terminated]", "N/A", null],["5725728345", "[Terminated]", "N/A", null],["5725956843", "[Terminated]", "N/A", null],["5678790743", "warzonenofr", "Terminated", "15478426"],["5678826076", "Rowdy3030", "Terminated", "14472306"],["5682106904", "Rulecin_1", "Terminated", "10427847"],["5692750669", "YumPost", "Terminated", "13426173"],["5698889021", "ishowleeks", "Terminated", "16315510"],["5707607462", "Zvoombie", "Terminated", "14571762"],["5715531385", "feedus4", "Terminated", "11654316"],["5721121345", "TAKlNGANAP", "Terminated", "10283733"],["5725918241", "Inlml", "Terminated", "13149488"]
             ]
         };
 
-        // Note: For Roblox IDs that are null (Terminated/Unknown), the link will not work.
-        
         let currentCategory = 'exists';
         let currentPage = 1;
         const rowsPerPage = 10;
+
+        function updateCounts() {
+            document.getElementById('btn-exists').innerText = `🤚 Existing (${data.exists.length})`;
+            document.getElementById('btn-unknown').innerText = `❔ Unknown (${data.unknown.length})`;
+            document.getElementById('btn-terminated').innerText = `💥 Terminated/Hidden (${data.terminated.length})`;
+        }
 
         function setCategory(cat) {
             currentCategory = cat;
@@ -104,27 +101,15 @@
             pageItems.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'owner-row border-t border-white/5';
-                
                 const isNew = row[2].includes('days');
                 const badge = isNew ? '<span class="new-badge">NEW</span>' : '';
-                const rowNumber = start + index + 1;
                 
-                // Link logic: If no Roblox ID, just show name. If ID exists, link to Rolimons player.
-                const nameDisplay = row[3] 
-                    ? `<a href="https://www.rolimons.com/player/${row[3]}" target="_blank" class="name-link font-bold">${row[1]}</a>`
-                    : `<span class="text-gray-600">${row[1]}</span>`;
+                const nameLink = row[3] ? `<a href="https://www.rolimons.com/player/${row[3]}" target="_blank" class="name-link">${row[1]}</a>` : row[1];
 
                 tr.innerHTML = `
-                    <td class="p-5 text-gray-600 font-mono text-xs">${rowNumber}</td>
-                    <td class="p-5">
-                        <a href="https://www.rolimons.com/uaid/${row[0]}" target="_blank" class="uaid-link">
-                            ${row[0]} ↗
-                        </a>
-                    </td>
-                    <td class="p-5">
-                        ${nameDisplay}
-                        ${badge}
-                    </td>
+                    <td class="p-5 text-gray-600 font-mono text-xs">${start + index + 1}</td>
+                    <td class="p-5"><a href="https://www.rolimons.com/uaid/${row[0]}" target="_blank" class="uaid-link">${row[0]} ↗</a></td>
+                    <td class="p-5 font-bold">${nameLink}${badge}</td>
                     <td class="p-5 accent italic">${row[2]}</td>
                 `;
                 body.appendChild(tr);
@@ -134,20 +119,15 @@
         }
 
         function nextPage() {
-            const totalPages = Math.ceil(data[currentCategory].length / rowsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable();
-            }
+            if (currentPage < Math.ceil(data[currentCategory].length / rowsPerPage)) { currentPage++; renderTable(); }
         }
 
         function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-            }
+            if (currentPage > 1) { currentPage--; renderTable(); }
         }
 
+        // Initialize
+        updateCounts();
         renderTable();
     </script>
 </body>
