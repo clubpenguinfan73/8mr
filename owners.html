@@ -12,8 +12,8 @@
         .btn-filter { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer; }
         .btn-filter.active { background: #a855f7; border-color: #a855f7; color: white; }
         .owner-row:hover { background: rgba(168, 85, 247, 0.05); }
-        .uaid-link { color: #94a3b8; transition: 0.2s; font-family: monospace; }
-        .uaid-link:hover { color: #a855f7; text-decoration: underline; }
+        .uaid-link, .name-link { color: #94a3b8; transition: 0.2s; }
+        .uaid-link:hover, .name-link:hover { color: #a855f7; text-decoration: underline; }
         .new-badge { background: #a855f7; color: white; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
     </style>
 </head>
@@ -30,20 +30,20 @@
         <div class="flex flex-wrap justify-center gap-4 mb-8">
             <button onclick="setCategory('exists')" id="btn-exists" class="btn-filter active px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">🤚 Existing</button>
             <button onclick="setCategory('unknown')" id="btn-unknown" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">❔ Unknown</button>
-            <button onclick="filter('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated</button>
+            <button onclick="setCategory('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated</button>
         </div>
 
         <div class="glass overflow-hidden min-h-[600px] flex flex-col justify-between">
             <table class="w-full text-left border-collapse">
                 <thead class="bg-white/5">
                     <tr class="text-[10px] uppercase tracking-widest text-gray-400 font-black">
+                        <th class="p-5">#</th>
                         <th class="p-5">UAID (Link)</th>
                         <th class="p-5">Current Owner</th>
                         <th class="p-5">Owned Since</th>
                     </tr>
                 </thead>
-                <tbody id="registry-body" class="text-sm font-bold">
-                    </tbody>
+                <tbody id="registry-body" class="text-sm font-bold"></tbody>
             </table>
 
             <div class="p-6 border-t border-white/5 flex justify-between items-center bg-white/[0.01]">
@@ -72,6 +72,7 @@
             ],
             terminated: [
                 ["5678654728", "[Terminated]", "N/A"], ["5678790743", "warzonenofr", "Terminated"], ["5678826076", "Rowdy3030", "Terminated"], ["5682106904", "Rulecin_1", "Terminated"], ["5692750669", "YumPost", "Terminated"], ["5698889021", "ishowleeks", "Terminated"], ["5707607462", "Zvoombie", "Terminated"], ["5715531385", "feedus4", "Terminated"], ["5721121345", "TAKlNGANAP", "Terminated"], ["5725918241", "Inlml", "Terminated"]
+                // Note: You can add the other 33 terminated IDs from your text file here!
             ]
         };
 
@@ -98,21 +99,27 @@
             const end = start + rowsPerPage;
             const pageItems = categoryData.slice(start, end);
 
-            pageItems.forEach(row => {
+            pageItems.forEach((row, index) => {
                 const tr = document.createElement('tr');
                 tr.className = 'owner-row border-t border-white/5';
                 
-                // Check if acquisition was in "days" for the New Badge
                 const isNew = row[2].includes('days');
                 const badge = isNew ? '<span class="new-badge">NEW</span>' : '';
+                const rowNumber = start + index + 1;
 
                 tr.innerHTML = `
+                    <td class="p-5 text-gray-600 font-mono text-xs">${rowNumber}</td>
                     <td class="p-5">
                         <a href="https://www.rolimons.com/uaid/${row[0]}" target="_blank" class="uaid-link">
                             ${row[0]} ↗
                         </a>
                     </td>
-                    <td class="p-5 font-bold">${row[1]}${badge}</td>
+                    <td class="p-5">
+                        <a href="https://www.rolimons.com/player/${encodeURIComponent(row[1])}" target="_blank" class="name-link font-bold">
+                            ${row[1]}
+                        </a>
+                        ${badge}
+                    </td>
                     <td class="p-5 accent italic">${row[2]}</td>
                 `;
                 body.appendChild(tr);
@@ -123,17 +130,11 @@
 
         function nextPage() {
             const totalPages = Math.ceil(data[currentCategory].length / rowsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderTable();
-            }
+            if (currentPage < totalPages) { currentPage++; renderTable(); }
         }
 
         function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderTable();
-            }
+            if (currentPage > 1) { currentPage--; renderTable(); }
         }
 
         renderTable();
