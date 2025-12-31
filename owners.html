@@ -1,61 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>8MR | Official Ownership Registry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8MR | Ownership Registry</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background: #080808; color: white; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; }
+        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; }
         .accent { color: #a855f7; }
+        .btn-filter { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; }
+        .btn-filter.active { background: #a855f7; border-color: #a855f7; color: white; }
+        .btn-filter:hover:not(.active) { background: rgba(255,255,255,0.1); }
         .owner-row:hover { background: rgba(168, 85, 247, 0.05); }
+        .id-link { color: #94a3b8; transition: 0.2s; }
+        .id-link:hover { color: #a855f7; text-decoration: underline; }
     </style>
 </head>
-<body class="p-8">
-    <nav class="max-w-4xl mx-auto flex justify-between items-center mb-16">
+<body class="p-4 md:p-8">
+
+    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-12">
         <a href="/" class="text-2xl font-black italic tracking-tighter uppercase">8MR</a>
-        <div class="text-[10px] tracking-[0.3em] uppercase text-gray-500 font-bold">Registry Verified: Dec 2025</div>
+        <div class="text-[10px] tracking-widest text-gray-500 font-bold uppercase">Registry Update: 2025</div>
     </nav>
 
-    <div class="max-w-4xl mx-auto">
-        <h1 class="text-5xl font-black italic mb-2 uppercase italic glow">The 41 Legacy</h1>
-        <p class="text-gray-500 mb-12 font-bold uppercase tracking-widest text-xs">Current Circulating Owners & Serial Data</p>
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-5xl font-black italic mb-8 uppercase italic text-center">Asset Registry</h1>
+
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="filter('exists')" id="btn-exists" class="btn-filter active px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">🤚 Existing (62)</button>
+            <button onclick="filter('unknown')" id="btn-unknown" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">❔ Unknown (3)</button>
+            <button onclick="filter('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated (43)</button>
+        </div>
 
         <div class="glass overflow-hidden">
             <table class="w-full text-left border-collapse">
-                <thead>
-                    <tr class="bg-white/5 text-[10px] uppercase tracking-widest text-gray-400 font-black">
-                        <th class="p-6">Asset ID</th>
-                        <th class="p-6">Current Owner</th>
-                        <th class="p-6">Last Online</th>
-                        <th class="p-6">Status</th>
+                <thead class="bg-white/5">
+                    <tr class="text-[10px] uppercase tracking-widest text-gray-400 font-black">
+                        <th class="p-5">Asset ID</th>
+                        <th class="p-5">Owner / User</th>
+                        <th class="p-5">Status / Activity</th>
                     </tr>
                 </thead>
-                <tbody class="text-sm font-bold">
-                    <tr class="owner-row border-t border-white/5">
-                        <td class="p-6 font-mono text-gray-500">5678654287</td>
-                        <td class="p-6">Repotted</td>
-                        <td class="p-6 text-gray-400">25 Dec 2025</td>
-                        <td class="p-6 accent">EXISTING</td>
-                    </tr>
-                    <tr class="owner-row border-t border-white/5">
-                        <td class="p-6 font-mono text-gray-500">5678759315</td>
-                        <td class="p-6">GodzGalaxy</td>
-                        <td class="p-6 text-gray-400">22 Dec 2025</td>
-                        <td class="p-6 accent">EXISTING</td>
-                    </tr>
-                     <tr class="owner-row border-t border-white/5">
-                        <td class="p-6 font-mono text-gray-500">5678787873</td>
-                        <td class="p-6">uglybad</td>
-                        <td class="p-6 text-gray-400">01 Sep 2025</td>
-                        <td class="p-6 accent">EXISTING</td>
-                    </tr>
+                <tbody id="registry-body" class="text-sm font-bold">
                     </tbody>
             </table>
         </div>
-        
-        <p class="mt-8 text-center text-[10px] text-gray-600 uppercase tracking-widest">
-            Data sourced via Rolimon's API & Manual Verification
-        </p>
     </div>
+
+    <script>
+        const data = {
+            exists: [
+                ["0", "Roblox", "Last Online: 17 April 2023"],
+                ["5678654287", "Repotted", "Last Online: 25 December 2025"],
+                ["5678759315", "GodzGalaxy", "Last Online: 22 December 2025"],
+                ["5678787873", "uglybad", "Last Online: 01 September 2025"],
+                ["5678832487", "prepsure", "Last Online: 11 December 2025"],
+                ["5679106706", "vPoseidon", "Last Online: 31 May 2024"],
+                ["5679229405", "zPikmon", "Last Online: 13 September 2025"],
+                ["5679361455", "ShunkHood", "Last Online: 19 December 2025"],
+                ["5679733516", "Kole_fbx", "Last Online: 09 September 2025"],
+                ["5679942602", "OneWithTheRoaches", "Last Online: 09 December 2025"],
+                ["5680158424", "SpartanHoldings", "Last Online: 30 December 2025"],
+                ["5680189788", "Moonstrum", "Last Online: 23 August 2023"],
+                ["5680224324", "HungryJavelins", "Last Online: 27 December 2025"],
+                ["5680230043", "iReallyWantFood", "ONLINE"],
+                ["5680949993", "Ravenesha", "Last Online: 07 February 2025"],
+                ["5681043113", "iKingofAllKings", "In Studio"],
+                ["5681186374", "SeafoamWolfy", "Last Online: 20 December 2025"],
+                ["5681659739", "1LuisValdez", "Last Online: 29 December 2025"],
+                ["5681792122", "TTclubpenguin", "In Game"],
+                ["5681796185", "guido321", "Last Online: 03 December 2025"],
+                ["5682434844", "YungSmoke", "Last Online: 14 September 2023"],
+                ["5682504121", "NarnzArnzie", "Last Online: 24 December 2025"],
+                ["5682861963", "Foolzy", "Last Online: 30 December 2025"],
+                ["5683258234", "Puckmonster", "In Studio"],
+                ["5684960581", "AdvancedDrone", "Last Online: 18 July 2025"],
+                ["5685201898", "ElCantare", "Last Online: 11 November 2025"],
+                ["5686468528", "Ylisstol", "Last Online: 30 December 2025"],
+                ["5687155132", "Jaklic", "Last Online: 09 December 2025"],
+                ["5688960186", "VE5TS", "Last Online: 30 December 2025"],
+                ["5689769842", "jzyq", "Last Online: 30 December 2025"],
+                ["5690592612", "Klutzu", "ONLINE"],
+                ["5692920915", "dragonslayer5705", "Last Online: 25 December 2025"],
+                ["5693814721", "not_famous", "Last Online: 30 December 2025"],
+                ["5694643361", "Skeledonut", "Last Online: 02 October 2025"],
+                ["5695106436", "ChevyTh3Gamer", "Last Online: 12 September 2025"],
+                ["5696507316", "tacorbell", "Last Online: 29 December 2025"],
+                ["5697101691", "Superflee", "Last Online: 30 June 2025"],
+                ["5697278809", "js08_L", "Last Online: 30 December 2025"],
+                ["5698291145", "Pneuva", "Last Online: 06 December 2025"],
+                ["5698837577", "DogCheezerRatFace420", "Last Online: 03 September 2021"],
+                ["5700099520", "NodeMCU", "Last Online: 22 October 2025"],
+                ["5702158676", "StandsWithABat", "Last Online: 08 December 2025"],
+                ["5708229674", "litona", "Last Online: 20 February 2023"],
+                ["5708341380", "Jammintoad", "Last Online: 27 December 2025"],
+                ["5709443155", "firefeind1", "Last Online: 29 December 2025"],
+                ["5714062789", "KaizenKutz", "Last Online: 08 November 2025"],
+                ["5715210398", "MonkrysGhost", "Last Online: 29 December 2025"],
+                ["5715265282", "notmoocha", "Last Online: 30 December 2025"],
+                ["5715771187", "cas162622", "Last Online: 27 December 2025"],
+                ["5716287614", "rustydirer", "Last Online: 10 August 2024"],
+                ["5716908321", "Crab_Wrangler", "Last Online: 30 December 2025"],
+                ["5716960040", "Banana_Split", "Last Online: 16 September 2023"],
+                ["5719438713", "mariofanno1", "Last Online: 30 June 2024"],
+                ["5723697940", "animefreak3531", "Last Online: 30 December 2025"],
+                ["5725575655", "dastuke", "Last Online: 20 August 2025"],
+                ["5725580772", "Dry_Bones", "Last Online: 15 September 2025"],
+                ["5725628083", "gablox05", "Last Online: 30 December 2025"],
+                ["5725969027", "Composure", "Last Online: 30 September 2025"],
+                ["5725990259", "Needle_Me", "Last Online: 29 December 2025"],
+                ["5683076223", "jers_e", "Last Online: 15 December 2025"],
+                ["5698596584", "jers_e", "Last Online: 15 December 2025"],
+                ["5707742557", "jers_e", "Last Online: 15 December 2025"]
+            ],
+            unknown: [
+                ["5681377532", "[Unknown]", "N/A"],
+                ["5706361626", "[Unknown]", "N/A"],
+                ["5717390731", "[Unknown]", "N/A"]
+            ],
+            terminated: [
+                ["5678654728", "[Terminated]", "DELETED"],
+                ["5678654900", "[Terminated]", "DELETED"],
+                ["5678655580", "[Terminated]", "DELETED"],
+                ["5678655952", "[Terminated]", "DELETED"],
+                ["5678682350", "[Terminated]", "DELETED"],
+                ["5678689339", "[Terminated]", "DELETED"],
+                ["5678690064", "[Terminated]", "DELETED"],
+                ["5678692779", "[Terminated]", "DELETED"],
+                ["5678697812", "[Terminated]", "DELETED"],
+                ["5678698279", "[Terminated]", "DELETED"],
+                ["5678726809", "[Terminated]", "DELETED"],
+                ["5680136642", "[Terminated]", "DELETED"],
+                ["5680566796", "[Terminated]", "DELETED"],
+                ["5680970951", "[Terminated]", "DELETED"],
+                ["5682647062", "[Terminated]", "DELETED"],
+                ["5688097322", "[Terminated]", "DELETED"],
+                ["5689721984", "[Terminated]", "DELETED"],
+                ["5696931907", "[Terminated]", "DELETED"],
+                ["5696972926", "[Terminated]", "DELETED"],
+                ["5698144250", "[Terminated]", "DELETED"],
+                ["5704087310", "[Terminated]", "DELETED"],
+                ["5705405746", "[Terminated]", "DELETED"],
+                ["5705647085", "[Terminated]", "DELETED"],
+                ["5705651036", "[Terminated]", "DELETED"],
+                ["5707729321", "[Terminated]", "DELETED"],
+                ["5711526693", "[Terminated]", "DELETED"],
+                ["5712209358", "[Terminated]", "DELETED"],
+                ["5714484230", "[Terminated]", "DELETED"],
+                ["5719599907", "[Terminated]", "DELETED"],
+                ["5719990112", "[Terminated]", "DELETED"],
+                ["5722638110", "[Terminated]", "DELETED"],
+                ["5724227869", "[Terminated]", "DELETED"],
+                ["5725728345", "[Terminated]", "DELETED"],
+                ["5725956843", "[Terminated]", "DELETED"],
+                ["5678790743", "warzonenofr", "Terminated"],
+                ["5678826076", "Rowdy3030", "Terminated"],
+                ["5682106904", "Rulecin_1", "Terminated"],
+                ["5692750669", "YumPost", "Terminated"],
+                ["5698889021", "ishowleeks", "Terminated"],
+                ["5707607462", "Zvoombie", "Terminated"],
+                ["5715531385", "feedus4", "Terminated"],
+                ["5721121345", "TAKlNGANAP", "Terminated"],
+                ["5725918241", "Inlml", "Terminated"]
+            ]
+        };
+
+        function filter(type) {
+            // Update Buttons
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${type}`).classList.add('active');
+
+            // Render Table
+            const body = document.getElementById('registry-body');
+            body.innerHTML = '';
+
+            data[type].forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = 'owner-row border-t border-white/5';
+                tr.innerHTML = `
+                    <td class="p-5">
+                        <a href="https://www.rolimons.com/itemcopy/507795810/${row[0]}" target="_blank" class="id-link">
+                            ${row[0]}
+                        </a>
+                    </td>
+                    <td class="p-5">${row[1]}</td>
+                    <td class="p-5 text-gray-400">${row[2]}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        // Initialize with Existing
+        filter('exists');
+    </script>
 </body>
 </html>
