@@ -1,93 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>8MR | 8-Bit Mr. Tentacles</title>
-    <link rel="icon" type="image/png" href="nofilter.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8MR | 8-Bit Mr. Tentacles</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #080808; color: white; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; }
-        .accent { color: #a855f7; }
-        .glow { text-shadow: 0 0 30px rgba(168, 85, 247, 0.5); }
-        .btn { background: #a855f7; transition: 0.3s; font-weight: 900; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        @keyframes drift {
+            0% { transform: translate(-40%, -50%) scale(1); }
+            50% { transform: translate(-5%, -15%) scale(1.2); }
+            100% { transform: translate(-55%, -25%) scale(0.85); }
+        }
+
+        body { 
+            background: #030303; 
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            animation: fadeIn 1.2s ease-out forwards;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* SUPER VIBRANT BACKGROUND GLOW */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 5%;
+            left: -5%;
+            width: 110vw;
+            height: 110vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.3) 0%, rgba(168, 85, 247, 0.05) 40%, rgba(168, 85, 247, 0) 70%);
+            z-index: -1;
+            animation: drift 12s infinite alternate ease-in-out;
+            filter: blur(40px);
+        }
+
+        .glass { 
+            background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 18px; 
+            backdrop-filter: blur(12px);
+        }
+
+        .glow { text-shadow: 0 0 35px rgba(168, 85, 247, 0.9); }
+        
+        /* BUTTON STYLING */
+        .btn-primary {
+            background: #a855f7;
+            padding: 14px 40px;
+            border-radius: 10px;
+            font-weight: 900;
+            font-style: italic;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+        }
+        .btn-primary:hover { 
+            background: #c084fc; 
+            transform: translateY(-3px); 
+            box-shadow: 0 10px 20px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 14px 40px;
+            border-radius: 10px;
+            font-weight: 800;
+            font-style: italic;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-block;
+        }
+        .btn-outline:hover { 
+            background: rgba(255,255,255,0.12); 
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        .scammer-glass {
+            background: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 24px;
+        }
+
+        .bounce-img {
+            animation: bounce 3s infinite ease-in-out;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
     </style>
 </head>
 <body class="p-8">
-    <nav class="max-w-6xl mx-auto flex justify-between items-center mb-20">
-    <div class="text-2xl font-black tracking-tighter italic uppercase">8MR</div>
-    <div class="flex gap-4 items-center">
-        <a href="https://www.rolimons.com/item/507795810" target="_blank" 
-           class="text-xs font-black tracking-widest bg-gray-600/20 text-gray-400 border border-gray-500/30 px-6 py-2 rounded-full hover:bg-gray-600 hover:text-white transition uppercase">
-           Rolimon's
-        </a>
-        
-        <a href="https://discord.gg/4hZd3dx8Mn" target="_blank" 
-           class="accent-purple text-xs font-black tracking-widest border border-purple-500/30 px-6 py-2 rounded-full hover:bg-purple-500/10 transition uppercase">
-           Join Discord
-        </a>
-    </div>
+
+    <nav class="max-w-6xl mx-auto flex justify-between items-center mb-16 relative z-10">
+        <a href="https://discord.gg/mCP9FZmk5M" target="_blank" class="text-2xl font-black italic tracking-tighter uppercase glow hover:text-purple-400">8MR</a>
+        <div class="flex gap-4">
+            <a href="https://discord.gg/mCP9FZmk5M" target="_blank" class="btn-outline !py-2 !px-6 !text-[10px]">Discord</a>
+            <a href="https://www.rolimons.com/item/53937" target="_blank" class="btn-outline !py-2 !px-6 !text-[10px]">Rolimons</a>
+        </div>
     </nav>
 
-    <header class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 mb-24">
-        <div class="flex-1 text-center md:text-left">
-            <h1 class="text-7xl md:text-8xl font-black mb-6 glow italic uppercase">8-Bit Mr. Tentacles</h1>
-            <p class="text-gray-400 text-lg mb-8">61.7% Supply Burn. 41 Copies Remaining. The standard of rarity. Invest in 8mr not in rel or cri they both fucking suck lol.</p>
-            <a href="https://discord.gg/4hZd3dx8Mn" target="_blank" class="btn px-12 py-4 rounded-xl text-xs uppercase tracking-widest inline-block">Make an Offer</a>
+    <main class="max-w-6xl mx-auto relative z-10 text-center">
+        <div class="mb-12">
+            <img src="nofilter.png" alt="8-Bit Mr. Tentacles" class="w-32 mx-auto mb-8 bounce-img">
+            <h1 class="text-6xl md:text-8xl font-black italic mb-2 tracking-tighter glow uppercase">
+                8-Bit Mr. Tentacles
+            </h1>
         </div>
-        <img src="nofilter.png" class="w-80 h-80 object-contain drop-shadow-[0_0_50px_rgba(168,85,247,0.3)]">
-    </header>
 
-    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 mb-24">
-        <div class="glass p-8 border-b-2 border-purple-500"><p class="text-xs font-bold text-gray-500 mb-2 uppercase">Value</p><p class="text-3xl font-black italic">410,000</p></div>
-        <a href="/owners" class="glass p-8 block hover:border-purple-500/50 transition cursor-pointer">
-    <p class="text-xs font-bold text-gray-500 mb-2 uppercase">Copies</p>
-    <div class="flex justify-between items-end">
-        <p class="text-3xl font-black italic">41</p>
-        <span class="text-[9px] accent font-black uppercase tracking-tighter mb-1">View All ↗</span>
-    </div>
-</a>
-        <div class="glass p-8 border-b-2 border-purple-500"><p class="text-xs font-bold text-gray-500 mb-2 uppercase">Deleted</p><p class="text-3xl font-black accent italic">66</p></div>
-        <div class="glass p-8"><p class="text-xs font-bold text-gray-500 mb-2 uppercase">Best Price</p><p class="text-3xl font-black italic text-green-400">9.0M+</p></div>
-    </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            <div class="glass p-8">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Value</p>
+                <p class="text-3xl font-black italic"><span class="stat-count" data-target="410000">0</span></p>
+            </div>
+            <div class="glass p-8">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Copies</p>
+                <p class="text-3xl font-black italic"><span class="stat-count" data-target="62">0</span></p>
+            </div>
+            <div class="glass p-8">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Deleted</p>
+                <p class="text-3xl font-black italic"><span class="stat-count" data-target="43">0</span></p>
+            </div>
+            <div class="glass p-8">
+                <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-2">Best Price</p>
+                <p class="text-3xl font-black italic text-green-400">9.0M+</p>
+            </div>
+        </div>
 
-    <section class="max-w-4xl mx-auto glass p-12 mb-24">
-        <h3 class="text-center font-black mb-8 accent uppercase tracking-widest">Market Diagnostic (Work in progress)</h3>
-        <div class="flex gap-4 mb-8">
-            <input type="text" id="input" placeholder="Paste Rolimon's Link..." class="flex-1 bg-black border border-white/10 rounded-xl px-6 py-4 outline-none focus:border-purple-500">
-            <button onclick="runScan()" id="btn" class="btn px-8 py-4 rounded-xl uppercase text-xs">Scan Asset</button>
+        <div class="flex flex-wrap justify-center gap-6 mb-32">
+            <a href="owners.html" class="btn-primary">Open Registry</a>
+            <a href="https://discord.gg/mCP9FZmk5M" target="_blank" class="btn-outline">Make Offer</a>
+            <a href="compare.html" class="btn-outline">Compare Tool</a>
         </div>
-        <div id="results" class="hidden">
-            <table class="w-full text-left text-sm font-bold">
-                <tr class="border-b border-white/5"><td class="py-4 text-gray-500">Asset Name</td><td id="r-name" class="py-4">---</td></tr>
-                <tr class="border-b border-white/5"><td class="py-4 text-gray-500">Value Compare</td><td id="r-val" class="py-4">---</td></tr>
-                <tr class="border-b border-white/5"><td class="py-4 text-gray-500">Copies Compare</td><td id="r-copies" class="py-4">---</td></tr>
-                <tr><td class="py-4 text-gray-500">Verdict</td><td id="r-verdict" class="py-4 accent italic">---</td></tr>
-            </table>
-        </div>
-    </section>
+
+        <section class="max-w-5xl mx-auto mb-20">
+            <div class="scammer-glass p-12 relative overflow-hidden">
+                <div class="relative z-10 flex flex-col items-center justify-center text-center">
+                    <div class="flex items-center justify-center gap-4 mb-4">
+                        <span class="text-red-500 animate-pulse text-3xl">⚠️</span>
+                        <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-red-500 italic">
+                            DONT TRADE WITH <a href="https://www.rolimons.com/player/4728895801" target="_blank" class="underline decoration-4 underline-offset-8 hover:text-white transition-all">RyanDesignUI</a>
+                        </h2>
+                        <span class="text-red-500 animate-pulse text-3xl">⚠️</span>
+                    </div>
+                    <p class="text-gray-300 font-bold text-xl uppercase tracking-widest">
+                        He is a known scammer and will <span class="text-red-500">beam you</span>.
+                    </p>
+                </div>
+                <div class="mt-10 border-t border-white/10 pt-10 flex justify-center">
+                    <img src="338527f0-84d9-42ae-a4a7-e508f85166ee.png" alt="Warning Banner" class="max-w-4xl w-full rounded-xl border border-red-500/20 shadow-2xl">
+                </div>
+            </div>
+        </section>
+    </main>
 
     <script>
-        async function runScan() {
-            const id = document.getElementById('input').value.match(/item\/(\d+)/)?.[1];
-            if(!id) return alert("Invalid Link");
-            document.getElementById('btn').innerText = "CONNECTING DB...";
-            try {
-                const res = await fetch(`/.netlify/functions/compare?id=${id}`);
-                const data = await res.json();
-                document.getElementById('results').classList.remove('hidden');
-                document.getElementById('r-name').innerText = data.name;
-                document.getElementById('r-val').innerText = data.value.toLocaleString() + " R$";
-                document.getElementById('r-copies').innerText = data.copies;
-                document.getElementById('r-verdict').innerText = id == "507795810" ? "AUTHENTIC 8MR" : (data.copies > 41 ? "INFERIOR SCARCITY" : "RIVAL SCARCITY");
-            } catch(e) { alert("DB Connection Error. Check Netlify logs."); }
-            document.getElementById('btn').innerText = "SCAN ASSET";
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = value.toLocaleString();
+                if (progress < 1) { window.requestAnimationFrame(step); }
+            };
+            window.requestAnimationFrame(step);
         }
+
+        window.onload = () => {
+            const stats = document.querySelectorAll('.stat-count');
+            stats.forEach(stat => {
+                const target = parseInt(stat.getAttribute('data-target'));
+                animateValue(stat, 0, target, 2000);
+            });
+        };
     </script>
 </body>
-
 </html>
-
-
-
-
