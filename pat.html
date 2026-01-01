@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8MR | Pat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Fixed images on the sides */
+        .side-image {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 250px; /* Adjusted size to fit both sides better */
+            height: auto;
+            z-index: 10;
+            pointer-events: none; /* Allows clicks to pass through if they overlap text */
+        }
+
+        .left-img { left: 40px; }
+        .right-img { right: 40px; }
+
+        /* Back Button Styling */
+        .back-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            padding: 10px 20px;
+            border: 1px solid black;
+            transition: all 0.2s ease;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .content-container {
+            max-width: 600px; /* Narrower to prevent text from hitting the images */
+            text-align: center;
+            padding: 40px;
+            position: relative;
+            z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">← Back to Home</a>
+
+    <img src="pat.png" alt="Pat Left" class="side-image left-img">
+    <img src="pat.png" alt="Pat Right" class="side-image right-img">
+
+    <div class="content-container">
+        <h1 class="text-4xl font-black mb-8 uppercase tracking-tighter">Pat the furry failtrader</h1>
+        
+        <div class="space-y-6 text-lg leading-relaxed">
+            <p></p>
+            <p>Pat is a really bad trader who fail traded 8mr and now has the nerve to shit talk it please dont trade with him he is also a furry femboy who tries to give pawjobs to rich eboys in doll house roleplay</p>
+        </div>
+    </div>
+
+</body>
+</html>
