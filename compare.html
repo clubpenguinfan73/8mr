@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8MR | Compare Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @font-face {
+            font-family: "Geist";
+            src: url("https://assets.codepen.io/605876/GeistVF.ttf") format("truetype");
+        }
+
+        :root {
+            --size: 20px;
+        }
+
+        body {
+            margin: 0;
+            background: hsl(0 0% 4%); /* Dark base */
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* THE NOISE EFFECT LAYER */
+        .el {
+            position: fixed;
+            inset: 0;
+            /* PURPLE SPECTRUM GRADIENT */
+            background: conic-gradient(from 180deg at 50% 70%, 
+                #a855f7 0deg, 
+                #6366f1 72deg, 
+                #d946ef 144deg, 
+                #7c3aed 216deg, 
+                #4f46e5 288deg, 
+                #a855f7 1turn);
+            width: 100%;
+            height: 100%;
+            mask:
+                radial-gradient(circle at 50% 50%, white 2px, transparent 2.5px) 50% 50% / var(--size) var(--size),
+                url("https://assets.codepen.io/605876/noise-mask.png") 256px 50% / 256px 256px;
+            mask-composite: intersect;
+            -webkit-mask-composite: source-in; /* Support for Chrome/Safari */
+            animation: flicker 20s infinite linear;
+            z-index: 1;
+            opacity: 0.8;
+        }
+
+        @keyframes flicker {
+            to { mask-position: 50% 50%, 0 50%; }
+        }
+
+        /* GLASS CARD CONTAINER */
+        .glass { 
+            background: rgba(0, 0, 0, 0.7); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 30px; 
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            position: relative;
+        }
+
+        .glow { text-shadow: 0 0 30px rgba(168, 85, 247, 0.8); }
+        .progress-bar { background: #a855f7; box-shadow: 0 0 15px #a855f7; }
+
+        .btn-return {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+        .btn-return:hover {
+            background: #a855f7;
+            border-color: #a855f7;
+            color: black;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+  
+    <div class="el"></div>
+
+    <div class="glass p-16 text-center max-w-xl w-full">
+        <div class="relative z-10">
+            <div class="text-[10px] font-black tracking-[0.5em] text-purple-400 uppercase mb-4">Module 04</div>
+            <h1 style="font-family: 'Geist', sans-serif;" class="text-7xl font-black italic mb-2 tracking-tighter glow uppercase text-white">Compare</h1>
+            <h2 class="text-2xl font-bold italic text-gray-500 mb-10 uppercase">Coming Soon</h2>
+            
+            <p class="text-gray-400 font-medium text-sm mb-12 leading-relaxed">
+                Backend API (Neon SQL) is integrated. The comparison engine is currently being calibrated for <span class="text-purple-400">8-Bit Mr. Tentacles</span> market data.
+            </p>
+            
+            <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden mb-4">
+                <div class="progress-bar h-full w-[74%] rounded-full"></div>
+            </div>
+            <div class="flex justify-between text-[10px] font-black text-gray-600 tracking-widest uppercase mb-12">
+                <span>Development</span>
+                <span>74% Complete</span>
+            </div>
+            
+            <a href="index.html" class="btn-return inline-block px-10 py-4 rounded-2xl text-[10px] font-black tracking-[0.2em] transition uppercase">Return to Terminal</a>
+        </div>
+    </div>
+
+</body>
+</html>
