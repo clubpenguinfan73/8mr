@@ -6,128 +6,275 @@
     <title>8MR | Ownership Registry</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #080808; color: white; font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; }
-        .accent { color: #a855f7; }
-        .btn-filter { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.3s; cursor: pointer; }
-        .btn-filter.active { background: #a855f7; border-color: #a855f7; color: white; }
-        .owner-row:hover { background: rgba(168, 85, 247, 0.05); }
-        .uaid-link, .name-link { color: #94a3b8; transition: 0.2s; }
-        .uaid-link:hover, .name-link:hover { color: #a855f7; text-decoration: underline; }
-        .new-badge { background: #a855f7; color: white; font-size: 8px; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes driftPrimary {
+            0% { transform: translate(-40%, -50%) scale(1); }
+            50% { transform: translate(-10%, -20%) scale(1.2); }
+            100% { transform: translate(-60%, -30%) scale(0.8); }
+        }
+        @keyframes pulsePurple {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        @keyframes shimmer {
+            0% { background-position: -468px 0; }
+            100% { background-position: 468px 0; }
+        }
+
+        body { 
+            background: #050505; 
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            animation: fadeIn 1.2s ease-out forwards;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 10%;
+            left: -10%;
+            width: 100vw;
+            height: 100vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.25) 0%, rgba(168, 85, 247, 0) 70%);
+            z-index: -1;
+            animation: driftPrimary 15s infinite alternate ease-in-out;
+            filter: blur(50px);
+        }
+
+        .bg-pulse {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0) 60%);
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            animation: pulsePurple 10s infinite ease-in-out;
+            pointer-events: none;
+        }
+
+        .glass { 
+            background: rgba(255,255,255,0.02); 
+            border: 1px solid rgba(255,255,255,0.08); 
+            border-radius: 24px; 
+            backdrop-filter: blur(12px);
+        }
+
+        .glow { text-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
+
+        /* Link Underline Animation */
+        .roli-link { 
+            color: #a855f7; 
+            position: relative;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .roli-link::after {
+            content: '';
+            position: absolute;
+            width: 0; height: 1px;
+            bottom: -2px; left: 0;
+            background-color: #c084fc;
+            transition: width 0.3s ease;
+        }
+        .roli-link:hover { color: #c084fc; }
+        .roli-link:hover::after { width: 100%; }
+
+        /* Terminated Row Styling */
+        .terminated-row { background: rgba(239, 68, 68, 0.03) !important; }
+        .terminated-uaid { 
+            text-decoration: line-through; 
+            color: #ef4444 !important; 
+            opacity: 0.6;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+        }
+
+        .skeleton {
+            height: 16px;
+            background: #1a1a1a;
+            background-image: linear-gradient(to right, #1a1a1a 0%, #2a2a2a 20%, #1a1a1a 40%, #1a1a1a 100%);
+            animation: shimmer 1.5s infinite linear;
+            border-radius: 4px;
+        }
+
+        .btn-filter.active { 
+            background: #a855f7; 
+            border-color: #c084fc; 
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+        }
+
+        .page-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            transition: 0.3s;
+        }
+        .page-btn:hover:not(:disabled) { background: #a855f7; border-color: #c084fc; }
+        .page-btn:disabled { opacity: 0.2; cursor: not-allowed; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-8">
+    <div class="bg-pulse"></div>
 
-    <nav class="max-w-5xl mx-auto flex justify-between items-center mb-12">
-        <a href="/" class="text-2xl font-black italic tracking-tighter uppercase hover:accent transition">8MR</a>
-        <div class="text-[10px] tracking-widest text-gray-500 font-bold uppercase italic">Official Registry</div>
+    <nav class="max-w-6xl mx-auto mb-12 relative z-10">
+        <a href="index.html" class="text-2xl font-black italic tracking-tighter uppercase glow">8MR</a>
     </nav>
 
-    <div class="max-w-5xl mx-auto">
-        <h1 class="text-5xl font-black italic mb-8 uppercase text-center">Ownership Registry</h1>
+    <div class="max-w-6xl mx-auto relative z-10 text-center">
+        <h1 class="text-5xl md:text-7xl font-black italic mb-6 tracking-tight glow uppercase text-transparent bg-clip-text bg-gradient-to-b from-white to-purple-400">
+            Ownership Registry
+        </h1>
 
-        <div class="flex flex-wrap justify-center gap-4 mb-8">
-            <button onclick="setCategory('exists')" id="btn-exists" class="btn-filter active px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">🤚 Existing (...)</button>
-            <button onclick="setCategory('unknown')" id="btn-unknown" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">❔ Unknown (...)</button>
-            <button onclick="setCategory('terminated')" id="btn-terminated" class="btn-filter px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest">💥 Terminated/Hidden (...)</button>
+        <div class="mb-10">
+            <input type="text" id="ownerSearch" placeholder="SEARCH BY NAME OR UAID..." class="bg-white/5 border border-white/10 rounded-xl px-6 py-3 w-full max-w-md uppercase text-xs font-bold tracking-widest outline-none focus:border-purple-500">
         </div>
 
-        <div class="glass overflow-hidden min-h-[620px] flex flex-col justify-between">
-            <table class="w-full text-left border-collapse">
-                <thead class="bg-white/5">
-                    <tr class="text-[10px] uppercase tracking-widest text-gray-400 font-black">
-                        <th class="p-5">#</th>
-                        <th class="p-5">UAID (Link)</th>
-                        <th class="p-5">Current Owner</th>
-                        <th class="p-5">Owned Since</th>
-                    </tr>
-                </thead>
-                <tbody id="registry-body" class="text-sm font-bold"></tbody>
-            </table>
+        <div class="flex flex-wrap justify-center gap-4 mb-12">
+            <button onclick="setCategory('exists')" id="btn-exists" class="btn-filter active px-8 py-4 text-xs font-bold uppercase tracking-widest rounded-xl border border-white/10">🤚 Existing (62)</button>
+            <button onclick="setCategory('unknown')" id="btn-unknown" class="btn-filter px-8 py-4 text-xs font-bold uppercase tracking-widest bg-white/5 rounded-xl border border-white/10">❔ Unknown (3)</button>
+            <button onclick="setCategory('terminated')" id="btn-terminated" class="btn-filter px-8 py-4 text-xs font-bold uppercase tracking-widest bg-white/5 rounded-xl border border-white/10">💥 Terminated (43)</button>
+        </div>
 
-            <div class="p-6 border-t border-white/5 flex justify-between items-center bg-white/[0.01]">
-                <span id="page-info" class="text-[10px] uppercase text-gray-500 font-bold tracking-widest">Page 1 of 1</span>
-                <div class="flex gap-2">
-                    <button onclick="prevPage()" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold transition">PREV</button>
-                    <button onclick="nextPage()" class="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-xs font-bold transition">NEXT</button>
-                </div>
+        <div class="glass overflow-hidden border border-white/10 shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-white/5 text-[11px] uppercase tracking-[0.2em] text-purple-300 font-black">
+                        <tr>
+                            <th class="p-6">#</th>
+                            <th class="p-6">UAID</th>
+                            <th class="p-6">Current Owner</th>
+                            <th class="p-6">Owned Since</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registry-body" class="text-sm font-bold"></tbody>
+                </table>
             </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-6 mt-8 mb-20">
+            <button id="prevPage" class="page-btn uppercase tracking-widest">← Prev</button>
+            <span id="pageInfo" class="text-[10px] font-black uppercase tracking-widest text-gray-500">Page 1 of 1</span>
+            <button id="nextPage" class="page-btn uppercase tracking-widest">Next →</button>
         </div>
     </div>
 
     <script>
-        const data = {
-            // Format: ["UAID", "Name", "Owned Since", "RobloxID"]
-            exists: [
-                ["5697278809", "js08_L", "5 days ago", "131494883"],["5688960186", "VE5TS", "20 days ago", "190506048"],["5715771187", "cas162622", "25 days ago", "25740436"],["5696507316", "tacorbell", "26 days ago", "102837330"],["5679361455", "ShunkHood", "4 months ago", "5849033"],["5715265282", "notmoocha", "5 months ago", "283434190"],["5681659739", "1LuisValdez", "7 months ago", "55465620"],["5681792122", "TTclubpenguin", "7 months ago", "44132047"],["5714062789", "KaizenKutz", "8 months ago", "154784260"],["5680158424", "SpartanHoldings", "10 months ago", "148817757"],["5683076223", "jers_e", "1 year ago", "134261730"],["5698596584", "jers_e", "1 year ago", "134261730"],["5707742557", "jers_e", "1 year ago", "134261730"],["5686468528", "Ylisstol", "2 years ago", "163155106"],["5695106436", "ChevyTh3Gamer", "2 years ago", "48154575"],["5716908321", "Crab_Wrangler", "2 years ago", "185671158"],["5725990259", "Needle_Me", "2 years ago", "172382173"],["5680949993", "Ravenesha", "3 years ago", "22554763"],["5682504121", "NarnzArnzie", "3 years ago", "34005891"],["5682861963", "Foolzy", "3 years ago", "37059952"],["5690592612", "Klutzu", "3 years ago", "23386008"],["5698291145", "Pneuva", "3 years ago", "20443265"],["5725969027", "Composure", "3 years ago", "14686438"],["5678651949", "Roblox", "9 years ago", "1"],["5678654287", "Repotted", "9 years ago", "5365511"],["5678759315", "GodzGalaxy", "9 years ago", "10643666"],["5678787873", "uglybad", "9 years ago", "14571762"],["5678832487", "prepsure", "9 years ago", "14472306"],["5679106706", "vPoseidon", "9 years ago", "12563383"],["5679229405", "zPikmon", "9 years ago", "16091444"],["5679733516", "Kole_fbx", "9 years ago", "11654316"],["5679942602", "OneWithTheRoaches", "9 years ago", "10427847"],["5680189788", "Moonstrum", "9 years ago", "12613143"],["5680224324", "HungryJavelins", "9 years ago", "13149488"],["5680230043", "iReallyWantFood", "9 years ago", "13244677"],["5681043113", "iKingofAllKings", "9 years ago", "10427847"],["5681186374", "SeafoamWolfy", "9 years ago", "12567433"],["5681796185", "guido321", "9 years ago", "11634567"],["5682434844", "YungSmoke", "9 years ago", "13426173"],["5683258234", "Puckmonster", "9 years ago", "10427847"],["5684960581", "AdvancedDrone", "9 years ago", "12567433"],["5685201898", "ElCantare", "9 years ago", "10643666"],["5687155132", "Jaklic", "9 years ago", "16315510"],["5689769842", "jzyq", "9 years ago", "14571762"],["5692920915", "dragonslayer5705", "9 years ago", "11654316"],["5693814721", "not_famous", "9 years ago", "10283733"],["5694643361", "Skeledonut", "9 years ago", "13149488"],["5697101691", "Superflee", "9 years ago", "12613143"],["5698837577", "DogCheezerRatFace420", "9 years ago", "13244677"],["5700099520", "NodeMCU", "9 years ago", "16091444"],["5702158676", "StandsWithABat", "9 years ago", "12563383"],["5708229674", "litona", "9 years ago", "11634567"],["5708341380", "Jammintoad", "9 years ago", "15478426"],["5709443155", "firefeind1", "9 years ago", "14472306"],["5715210398", "MonkrysGhost", "9 years ago", "10427847"],["5716287614", "rustydirer", "9 years ago", "13426173"],["5716960040", "Banana_Split", "9 years ago", "16315510"],["5719438713", "mariofanno1", "9 years ago", "14571762"],["5723697940", "animefreak3531", "9 years ago", "11654316"],["5725575655", "dastuke", "9 years ago", "10283733"],["5725580772", "Dry_Bones", "9 years ago", "13149488"],["5725628083", "gablox05", "9 years ago", "12613143"]
-            ],
-            unknown: [
-                ["5681377532", "[Unknown]", "N/A", null],["5706361626", "[Unknown]", "N/A", null],["5717390731", "[Unknown]", "N/A", null]
-            ],
-            terminated: [
-                ["5678654728", "[Terminated]", "N/A", null],["5678654900", "[Terminated]", "N/A", null],["5678655580", "[Terminated]", "N/A", null],["5678655952", "[Terminated]", "N/A", null],["5678682350", "[Terminated]", "N/A", null],["5678689339", "[Terminated]", "N/A", null],["5678690064", "[Terminated]", "N/A", null],["5678692779", "[Terminated]", "N/A", null],["5678697812", "[Terminated]", "N/A", null],["5678698279", "[Terminated]", "N/A", null],["5678726809", "[Terminated]", "N/A", null],["5680136642", "[Terminated]", "N/A", null],["5680566796", "[Terminated]", "N/A", null],["5680970951", "[Terminated]", "N/A", null],["5682647062", "[Terminated]", "N/A", null],["5688097322", "[Terminated]", "N/A", null],["5689721984", "[Terminated]", "N/A", null],["5696931907", "[Terminated]", "N/A", null],["5696972926", "[Terminated]", "N/A", null],["5698144250", "[Terminated]", "N/A", null],["5704087310", "[Terminated]", "N/A", null],["5705405746", "[Terminated]", "N/A", null],["5705647085", "[Terminated]", "N/A", null],["5705651036", "[Terminated]", "N/A", null],["5707729321", "[Terminated]", "N/A", null],["5711526693", "[Terminated]", "N/A", null],["5712209358", "[Terminated]", "N/A", null],["5714484230", "[Terminated]", "N/A", null],["5719599907", "[Terminated]", "N/A", null],["5719990112", "[Terminated]", "N/A", null],["5722638110", "[Terminated]", "N/A", null],["5724227869", "[Terminated]", "N/A", null],["5725728345", "[Terminated]", "N/A", null],["5725956843", "[Terminated]", "N/A", null],["5678790743", "warzonenofr", "Terminated", "15478426"],["5678826076", "Rowdy3030", "Terminated", "14472306"],["5682106904", "Rulecin_1", "Terminated", "10427847"],["5692750669", "YumPost", "Terminated", "13426173"],["5698889021", "ishowleeks", "Terminated", "16315510"],["5707607462", "Zvoombie", "Terminated", "14571762"],["5715531385", "feedus4", "Terminated", "11654316"],["5721121345", "TAKlNGANAP", "Terminated", "10283733"],["5725918241", "Inlml", "Terminated", "13149488"]
-            ]
-        };
-
         let currentCategory = 'exists';
         let currentPage = 1;
         const rowsPerPage = 10;
+        const itemId = "21070012"; // Super Super Happy Face ID
 
-        function updateCounts() {
-            document.getElementById('btn-exists').innerText = `🤚 Existing (${data.exists.length})`;
-            document.getElementById('btn-unknown').innerText = `❔ Unknown (${data.unknown.length})`;
-            document.getElementById('btn-terminated').innerText = `💥 Terminated/Hidden (${data.terminated.length})`;
+        // FULL DATASET
+        const data = {
+            exists: [
+                ["5680230043", "RyanDesignUI", "1 day ago", "https://www.rolimons.com/player/4728895801"], ["5697278809", "js08_L", "5 days ago", "https://www.rolimons.com/player/9721508400"], ["5688960186", "VE5TS", "20 days ago", "https://www.rolimons.com/player/1300521339"], ["5715771187", "cas162622", "25 days ago", "https://www.rolimons.com/player/6121731094"], ["5696507316", "tacorbell", "26 days ago", "https://www.rolimons.com/player/95402655"], ["5679361455", "ShunkHood", "4 months ago", "https://www.rolimons.com/player/79145340"], ["5715265282", "notmoocha", "5 months ago", "https://www.rolimons.com/player/3721913333"], ["5681659739", "1LuisValdez", "7 months ago", "https://www.rolimons.com/player/52240133"], ["5681792122", "TTclubpenguin", "7 months ago", "https://www.rolimons.com/player/3151192007"], ["5714062789", "KaizenKutz", "8 months ago", "https://www.rolimons.com/player/874475918"], ["5680158424", "SpartanHoldings", "10 months ago", "https://www.rolimons.com/player/7935349600"], ["5683076223", "jers_e", "1 year ago", "https://www.rolimons.com/player/198131804"], ["5698596584", "jers_e", "1 year ago", "https://www.rolimons.com/player/198131804"], ["5707742557", "jers_e", "1 year ago", "https://www.rolimons.com/player/198131804"], ["5686468528", "Ylisstol", "2 years ago", "https://www.rolimons.com/player/88865463"], ["5695106436", "ChevyTh3Gamer", "2 years ago", "https://www.rolimons.com/player/302472712"], ["5716908321", "Crab_Wrangler", "2 years ago", "https://www.rolimons.com/player/50767332"], ["5725990259", "Needle_Me", "2 years ago", "https://www.rolimons.com/player/499129819"], ["5680949993", "Ravenesha", "3 years ago", "https://www.rolimons.com/player/152392262"], ["5682504121", "NarnzArnzie", "3 years ago", "https://www.rolimons.com/player/121577585"], ["5682861963", "Foolzy", "3 years ago", "https://www.rolimons.com/player/25298570"], ["5690592612", "Klutzu", "3 years ago", "https://www.rolimons.com/player/87921828"], ["5698291145", "Pneuva", "3 years ago", "https://www.rolimons.com/player/23931830"], ["5725969027", "Composure", "3 years ago", "https://www.rolimons.com/player/15180596"], ["0", "Roblox", "9 years ago", "https://www.rolimons.com/player/1"], ["5678654287", "Repotted", "9 years ago", "https://www.rolimons.com/player/21890364"], ["5678759315", "GodzGalaxy", "9 years ago", "https://www.rolimons.com/player/37152862"], ["5678787873", "uglybad", "9 years ago", "https://www.rolimons.com/history/53937?timestamp=1756598400"], ["5678832487", "prepsure", "9 years ago", "https://www.rolimons.com/player/14035325"], ["5679106706", "vPoseidon", "9 years ago", "https://www.rolimons.com/player/38815137"], ["5679229405", "zPikmon", "9 years ago", "https://www.rolimons.com/player/38661185"], ["5679733516", "Kole_fbx", "9 years ago", "https://www.rolimons.com/player/56288680"], ["5679942602", "OneWithTheRoaches", "9 years ago", "https://www.rolimons.com/player/48474265"], ["5680189788", "Moonstrum", "9 years ago", "https://www.rolimons.com/player/53827473"], ["5680224324", "HungryJavelins", "9 years ago", "https://www.rolimons.com/player/28385541"], ["5681043113", "iKingofAllKings", "9 years ago", "https://www.rolimons.com/player/59869313"], ["5681186374", "SeafoamWolfy", "9 years ago", "https://www.rolimons.com/player/879853"], ["5681796185", "guido321", "9 years ago", "https://www.rolimons.com/player/5110346"], ["5682434844", "YungSmoke", "9 years ago", "https://www.rolimons.com/player/48294618"], ["5683258234", "Puckmonster", "9 years ago", "https://www.rolimons.com/player/16292071"], ["5684960581", "AdvancedDrone", "9 years ago", "https://www.rolimons.com/player/7589682"], ["5685201898", "ElCantare", "9 years ago", "https://www.rolimons.com/player/97342205"], ["5687155132", "Jaklic", "9 years ago", "https://www.rolimons.com/player/59666100"], ["5689769842", "jzyq", "9 years ago", "https://www.rolimons.com/player/164349318"], ["5692920915", "dragonslayer5705", "9 years ago", "https://www.rolimons.com/history/91434475?timestamp=1767225600"], ["5693814721", "not_famous", "9 years ago", "https://www.rolimons.com/player/19935044"], ["5694643361", "Skeledonut", "9 years ago", "https://www.rolimons.com/player/5953860"], ["5697101691", "Superflee", "9 years ago", "https://www.rolimons.com/player/448563"], ["5698837577", "DogCheezerRatFace420", "9 years ago", "https://www.rolimons.com/player/29012402"], ["5700099520", "NodeMCU", "9 years ago", "https://www.rolimons.com/player/76882211"], ["5702158676", "StandsWithABat", "9 years ago", "https://www.rolimons.com/player/31864077"], ["5708229674", "litona", "9 years ago", "https://www.rolimons.com/player/19235449"], ["5708341380", "Jammintoad", "9 years ago", "https://www.rolimons.com/player/2190699"], ["5709443155", "firefeind1", "9 years ago", "https://www.rolimons.com/player/5746"], ["5715210398", "MonkrysGhost", "9 years ago", "https://www.rolimons.com/player/6444287"], ["5716287614", "rustydirer", "9 years ago", "https://www.rolimons.com/player/72032718"], ["5716960040", "Banana_Split", "9 years ago", "https://www.rolimons.com/player/35044886"], ["5719438713", "mariofanno1", "9 years ago", "https://www.rolimons.com/player/65455"], ["5723697940", "animefreak3531", "9 years ago", "https://www.rolimons.com/player/34729909"], ["5725575655", "dastuke", "9 years ago", "https://www.rolimons.com/player/3359202"], ["5725580772", "Dry_Bones", "9 years ago", "https://www.rolimons.com/player/3359202"], ["5725628083", "gablox05", "9 years ago", "https://www.rolimons.com/player/18424915"]
+            ],
+            unknown: [
+                ["5681377532", "[Unknown]", "N/A", null],
+                ["5706361626", "[Unknown]", "N/A", null],
+                ["5717390731", "[Unknown]", "N/A", null]
+            ],
+            terminated: [
+                ["5678654728", "[Terminated]", "N/A", null],["5678654900", "[Terminated]", "N/A", null],["5678655580", "[Terminated]", "N/A", null],["5678655952", "[Terminated]", "N/A", null],["5678682350", "[Terminated]", "N/A", null],["5678689339", "[Terminated]", "N/A", null],["5678690064", "[Terminated]", "N/A", null],["5678692779", "[Terminated]", "N/A", null],["5678697812", "[Terminated]", "N/A", null],["5678698279", "[Terminated]", "N/A", null],["5678726809", "[Terminated]", "N/A", null],["5680136642", "[Terminated]", "N/A", null],["5680566796", "[Terminated]", "N/A", null],["5680970951", "[Terminated]", "N/A", null],["5682647062", "[Terminated]", "N/A", null],["5688097322", "[Terminated]", "N/A", null],["5689721984", "[Terminated]", "N/A", null],["5696931907", "[Terminated]", "N/A", null],["5696972926", "[Terminated]", "N/A", null],["5698144250", "[Terminated]", "N/A", null],["5704087310", "[Terminated]", "N/A", null],["5705405746", "[Terminated]", "N/A", null],["5705647085", "[Terminated]", "N/A", null],["5705651036", "[Terminated]", "N/A", null],["5707729321", "[Terminated]", "N/A", null],["5711526693", "[Terminated]", "N/A", null],["5712209358", "[Terminated]", "N/A", null],["5714484230", "[Terminated]", "N/A", null],["5719599907", "[Terminated]", "N/A", null],["5719990112", "[Terminated]", "N/A", null],["5722638110", "[Terminated]", "N/A", null],["5724227869", "[Terminated]", "N/A", null],["5725728345", "[Terminated]", "N/A", null],["5725956843", "[Terminated]", "N/A", null],
+                ["5678790743", "warzonenofr", "Terminated", "https://www.rolimons.com/player/4064097996"],
+                ["5678826076", "Rowdy3030", "Terminated", "https://www.rolimons.com/player/966291354"],
+                ["5682106904", "Rulecin_1", "Terminated", "https://www.rolimons.com/player/2952322775"],
+                ["5692750669", "YumPost", "Terminated", "https://www.rolimons.com/player/39971424"],
+                ["5698889021", "ishowleeks", "Terminated", "https://www.rolimons.com/player/10138749113"],
+                ["5707607462", "Zvoombie", "Terminated", "https://www.rolimons.com/player/4246917508"],
+                ["5715531385", "feedus4", "Terminated", "https://www.rolimons.com/player/50077685"],
+                ["5721121345", "TAKlNGANAP", "Terminated", "https://www.rolimons.com/player/2653323114"],
+                ["5725918241", "Inlml", "Terminated", "https://www.rolimons.com/player/249291154"]
+            ]
+        };
+
+        function renderSkeleton() {
+            const body = document.getElementById('registry-body');
+            body.innerHTML = Array(rowsPerPage).fill(0).map(() => `
+                <tr class="border-t border-white/5">
+                    <td class="p-6"><div class="skeleton w-4"></div></td>
+                    <td class="p-6"><div class="skeleton w-32"></div></td>
+                    <td class="p-6"><div class="skeleton w-24"></div></td>
+                    <td class="p-6"><div class="skeleton w-16"></div></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTable() {
+            const body = document.getElementById('registry-body');
+            const searchTerm = document.getElementById('ownerSearch').value.toLowerCase();
+            
+            const filtered = data[currentCategory].filter(row => 
+                row[0].toLowerCase().includes(searchTerm) || row[1].toLowerCase().includes(searchTerm)
+            );
+
+            const totalPages = Math.ceil(filtered.length / rowsPerPage) || 1;
+            if (currentPage > totalPages) currentPage = totalPages;
+
+            const start = (currentPage - 1) * rowsPerPage;
+            const paginated = filtered.slice(start, start + rowsPerPage);
+
+            document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prevPage').disabled = currentPage === 1;
+            document.getElementById('nextPage').disabled = currentPage >= totalPages;
+
+            body.innerHTML = paginated.map((row, i) => {
+                const isTerminated = currentCategory === 'terminated';
+                const uaidLink = `https://www.rolimons.com/uaid/${row[0]}`;
+                const playerLink = row[3];
+                
+                return `
+                <tr class="owner-row border-t border-white/5 transition ${isTerminated ? 'terminated-row' : ''}">
+                    <td class="p-6 text-gray-500 font-mono">${(start + i + 1).toString().padStart(2, '0')}</td>
+                    <td class="p-6">
+                        <a href="${uaidLink}" target="_blank" class="roli-link tracking-wider ${isTerminated ? 'terminated-uaid' : 'text-gray-300'}">
+                            ${row[0]}
+                        </a>
+                    </td>
+                    <td class="p-6">
+                        ${playerLink ? `<a href="${playerLink}" target="_blank" class="roli-link">${row[1]}</a>` : row[1]}
+                    </td>
+                    <td class="p-6 text-purple-400 italic uppercase text-xs tracking-tighter">${row[2]}</td>
+                </tr>`;
+            }).join('');
         }
 
         function setCategory(cat) {
             currentCategory = cat;
             currentPage = 1;
-            renderTable();
             document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
             document.getElementById(`btn-${cat}`).classList.add('active');
+            renderSkeleton();
+            setTimeout(renderTable, 300);
         }
 
-        function renderTable() {
-            const body = document.getElementById('registry-body');
-            const pageInfo = document.getElementById('page-info');
-            body.innerHTML = '';
+        document.getElementById('ownerSearch').addEventListener('input', () => {
+            currentPage = 1;
+            renderTable();
+        });
 
-            const categoryData = data[currentCategory];
-            const totalPages = Math.ceil(categoryData.length / rowsPerPage);
-            const start = (currentPage - 1) * rowsPerPage;
-            const pageItems = categoryData.slice(start, start + rowsPerPage);
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) { currentPage--; renderTable(); window.scrollTo(0,0); }
+        });
 
-            pageItems.forEach((row, index) => {
-                const tr = document.createElement('tr');
-                tr.className = 'owner-row border-t border-white/5';
-                const isNew = row[2].includes('days');
-                const badge = isNew ? '<span class="new-badge">NEW</span>' : '';
-                
-                const nameLink = row[3] ? `<a href="https://www.rolimons.com/player/${row[3]}" target="_blank" class="name-link">${row[1]}</a>` : row[1];
+        document.getElementById('nextPage').addEventListener('click', () => {
+            const searchTerm = document.getElementById('ownerSearch').value.toLowerCase();
+            const filtered = data[currentCategory].filter(row => 
+                row[0].toLowerCase().includes(searchTerm) || row[1].toLowerCase().includes(searchTerm)
+            );
+            if (currentPage < Math.ceil(filtered.length / rowsPerPage)) { 
+                currentPage++; 
+                renderTable(); 
+                window.scrollTo(0,0);
+            }
+        });
 
-                tr.innerHTML = `
-                    <td class="p-5 text-gray-600 font-mono text-xs">${start + index + 1}</td>
-                    <td class="p-5"><a href="https://www.rolimons.com/uaid/${row[0]}" target="_blank" class="uaid-link">${row[0]} ↗</a></td>
-                    <td class="p-5 font-bold">${nameLink}${badge}</td>
-                    <td class="p-5 accent italic">${row[2]}</td>
-                `;
-                body.appendChild(tr);
-            });
-
-            pageInfo.innerText = `Page ${currentPage} of ${totalPages || 1}`;
-        }
-
-        function nextPage() {
-            if (currentPage < Math.ceil(data[currentCategory].length / rowsPerPage)) { currentPage++; renderTable(); }
-        }
-
-        function prevPage() {
-            if (currentPage > 1) { currentPage--; renderTable(); }
-        }
-
-        // Initialize
-        updateCounts();
         renderTable();
     </script>
 </body>
